@@ -9,6 +9,8 @@ CHANGELOG
  * Make the `config/` directory optional in `MicroKernelTrait`, add support for service arguments in the
    invokable Kernel class, and register `FrameworkBundle` by default when the `bundles.php` file is missing
  * [BC BREAK] The `secrets:decrypt-to-local` command terminates with a non-zero exit code when a secret could not be read
+ * Wire the `Symfony\Component\PropertyInfo\Extractor\ConstructorExtractor` class
+ * Add new `framework.property_info.with_constructor_extractor` option to allow enabling or disabling the constructor extractor integration
 
 7.1
 ---

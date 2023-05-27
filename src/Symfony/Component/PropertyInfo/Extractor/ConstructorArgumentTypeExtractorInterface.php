@@ -18,8 +18,6 @@ use Symfony\Component\TypeInfo\Type;
  * Infers the constructor argument type.
  *
  * @author Dmitrii Poddubnyi <dpoddubny@gmail.com>
- *
- * @internal
  */
 interface ConstructorArgumentTypeExtractorInterface
 {
