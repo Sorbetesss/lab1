@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -28,6 +29,7 @@ class All extends Composite
      * @param array<Constraint>|array<string,mixed>|null $constraints
      * @param string[]|null                              $groups
      */
+    #[HasNamedArguments]
     public function __construct(mixed $constraints = null, ?array $groups = null, mixed $payload = null)
     {
         parent::__construct($constraints ?? [], $groups, $payload);
