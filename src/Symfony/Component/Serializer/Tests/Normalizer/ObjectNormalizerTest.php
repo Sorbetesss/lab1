@@ -927,6 +927,17 @@ class ObjectNormalizerTest extends TestCase
 
         $this->assertEquals($expected, $obj);
     }
+
+    public function testNormalizeWithCancelMethod()
+    {
+        $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
+        $normalizer = new ObjectNormalizer($classMetadataFactory);
+
+        $object = new ObjectWithCancelMethod();
+        $normalizer->normalize($object);
+
+        $this->assertFalse($object->cancelCalled);
+    }
 }
 
 class ProxyObjectDummy extends ObjectDummy
@@ -1208,4 +1219,14 @@ class ObjectDummyWithIgnoreAttributeAndPrivateProperty
     public $ignored = 'ignored';
 
     private $private = 'private';
+}
+
+class ObjectWithCancelMethod
+{
+    public $cancelCalled = false;
+
+    public function cancel()
+    {
+        $this->cancelCalled = true;
+    }
 }
