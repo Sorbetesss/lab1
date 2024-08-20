@@ -2359,7 +2359,7 @@ abstract class AbstractLayoutTestCase extends FormLayoutTestCase
 
         $html = $this->renderStart($form->createView());
 
-        $this->assertSame('<form name="form" method="get" action="http://example.com/directory">', $html);
+        $this->assertSame('<form name="form" method="get" action="http://example.com/directory" id="form_form">', $html);
     }
 
     public function testStartTagForPutRequest()
@@ -2391,7 +2391,7 @@ abstract class AbstractLayoutTestCase extends FormLayoutTestCase
             'action' => 'http://foo.com/directory',
         ]);
 
-        $this->assertSame('<form name="form" method="post" action="http://foo.com/directory">', $html);
+        $this->assertSame('<form name="form" method="post" action="http://foo.com/directory" id="form_form">', $html);
     }
 
     public function testStartTagForMultipartForm()
@@ -2405,7 +2405,7 @@ abstract class AbstractLayoutTestCase extends FormLayoutTestCase
 
         $html = $this->renderStart($form->createView());
 
-        $this->assertSame('<form name="form" method="get" action="http://example.com/directory" enctype="multipart/form-data">', $html);
+        $this->assertSame('<form name="form" method="get" action="http://example.com/directory" id="form_form" enctype="multipart/form-data">', $html);
     }
 
     public function testStartTagWithExtraAttributes()
@@ -2416,7 +2416,7 @@ abstract class AbstractLayoutTestCase extends FormLayoutTestCase
         ]);
 
         $html = $this->renderStart($form->createView(), [
-            'attr' => ['class' => 'foobar'],
+            'row_attr' => ['class' => 'foobar'],
         ]);
 
         $this->assertSame('<form name="form" method="get" action="http://example.com/directory" class="foobar">', $html);
