@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+7.2
+---
+
+ * Add `DoubleSubmitCsrfTokenManager`
+
 6.0
 ---
 

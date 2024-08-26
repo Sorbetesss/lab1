@@ -718,13 +718,18 @@ class ConfigurationTest extends TestCase
                 'x-forwarded-proto',
             ],
             'csrf_protection' => [
-                'enabled' => false,
+                'enabled' => null,
+                'cookie_name' => 'csrf-token',
+                'check_header' => false,
+                'double_submit_token_ids' => []
             ],
             'form' => [
                 'enabled' => !class_exists(FullStack::class),
                 'csrf_protection' => [
                     'enabled' => null, // defaults to csrf_protection.enabled
                     'field_name' => '_token',
+                    'field_attr' => ['data-controller' => 'csrf-protection'],
+                    'token_id' => null,
                 ],
             ],
             'esi' => ['enabled' => false],
