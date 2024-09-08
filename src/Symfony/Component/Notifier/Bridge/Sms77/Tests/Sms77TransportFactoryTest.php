@@ -14,6 +14,9 @@ namespace Symfony\Component\Notifier\Bridge\Sms77\Tests;
 use Symfony\Component\Notifier\Bridge\Sms77\Sms77TransportFactory;
 use Symfony\Component\Notifier\Test\TransportFactoryTestCase;
 
+/**
+ * @group legacy
+ */
 final class Sms77TransportFactoryTest extends TransportFactoryTestCase
 {
     public function createFactory(): Sms77TransportFactory
