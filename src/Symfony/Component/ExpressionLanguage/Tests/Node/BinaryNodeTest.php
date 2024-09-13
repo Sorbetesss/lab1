@@ -221,6 +221,25 @@ class BinaryNodeTest extends AbstractNodeTestCase
         eval('$regexp = "this is not a regexp"; '.$compiler->getSource().';');
     }
 
+    public function testCompileMatchesWithBooleanBinaryNode() {
+        $binary_node = new BinaryNode('||', new ConstantNode(true), new ConstantNode(false));
+        $node = new BinaryNode('matches', new ConstantNode('abc'), $binary_node);
+
+        $this->expectException(SyntaxError::class);
+        $this->expectExceptionMessage('A boolean is passed to "matches" instead of a regexp');
+        $compiler = new Compiler([]);
+        $node->compile($compiler);
+    }
+
+    public function testCompileMatchesWithStringBinaryNode() {
+        $binary_node = new BinaryNode('~', new ConstantNode('a'), new ConstantNode('b'));
+        $node = new BinaryNode('matches', new ConstantNode('abc'), $binary_node);
+
+        $compiler = new Compiler([]);
+        $node->compile($compiler);
+        $this->expectNotToPerformAssertions();
+    }
+
     public function testDivisionByZero()
     {
         $node = new BinaryNode('/', new ConstantNode(1), new ConstantNode(0));
