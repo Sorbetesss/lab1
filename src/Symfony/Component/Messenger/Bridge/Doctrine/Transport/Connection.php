@@ -519,7 +519,7 @@ class Connection implements ResetInterface
         $table = $schema->createTable($this->configuration['table_name']);
         // add an internal option to mark that we created this & the non-namespaced table name
         $table->addOption(self::TABLE_OPTION_NAME, $this->configuration['table_name']);
-        $table->addColumn('id', Types::BIGINT)
+        $idColumn = $table->addColumn('id', Types::BIGINT)
             ->setAutoincrement(true)
             ->setNotnull(true);
         $table->addColumn('body', Types::TEXT)
@@ -539,6 +539,13 @@ class Connection implements ResetInterface
         $table->addIndex(['queue_name']);
         $table->addIndex(['available_at']);
         $table->addIndex(['delivered_at']);
+
+        // We need to create a sequence for Oracle and set the id column to get the correct nextval
+        if ($this->driverConnection->getDatabasePlatform() instanceof OraclePlatform) {
+            $idColumn->setDefault('seq_'.$this->configuration['table_name'].'.nextval');
+
+            $schema->createSequence('seq_'.$this->configuration['table_name']);
+        }
     }
 
     private function decodeEnvelopeHeaders(array $doctrineEnvelope): array
