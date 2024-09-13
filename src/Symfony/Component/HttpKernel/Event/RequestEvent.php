@@ -49,7 +49,7 @@ class RequestEvent extends KernelEvent
     /**
      * Returns whether a response was set.
      *
-     * @phpstan-assert-if-true !null $this->getResponse()
+     * @psalm-assert-if-true !null $this->getResponse()
      * @return bool
      */
     public function hasResponse()
