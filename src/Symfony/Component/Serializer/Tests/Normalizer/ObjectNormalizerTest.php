@@ -953,6 +953,21 @@ class ObjectNormalizerTest extends TestCase
 
         $this->assertEquals($expected, $obj);
     }
+
+    public function testObjectNormalizerWithAttributeLoaderAndObjectHasStaticProperty()
+    {
+        $class = new class {
+            public static string $foo;
+        };
+
+        try {
+            $normalizer = new ObjectNormalizer(new ClassMetadataFactory(new AttributeLoader()));
+            $normalizer->normalize($class);
+            $this->expectNotToPerformAssertions();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
+    }
 }
 
 class ProxyObjectDummy extends ObjectDummy

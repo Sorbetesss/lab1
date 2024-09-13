@@ -177,7 +177,7 @@ final class ObjectNormalizer extends AbstractObjectNormalizer
 
         if ($context['_read_attributes'] ?? true) {
             if (!isset(self::$isReadableCache[$class.$attribute])) {
-                self::$isReadableCache[$class.$attribute] = (\is_object($classOrObject) && $this->propertyAccessor->isReadable($classOrObject, $attribute)) || $this->propertyInfoExtractor->isReadable($class, $attribute) || $this->hasAttributeAccessorMethod($class, $attribute);
+                self::$isReadableCache[$class.$attribute] = $this->isReadableCache($class, $classOrObject, $attribute);
             }
 
             return self::$isReadableCache[$class.$attribute];
@@ -212,5 +212,22 @@ final class ObjectNormalizer extends AbstractObjectNormalizer
         return !$method->isStatic()
             && !$method->getAttributes(Ignore::class)
             && !$method->getNumberOfRequiredParameters();
+    }
+
+    private function isReadableCache(object|string  $class, object|string $classOrObject, string $attribute): bool
+    {
+        if ($this->propertyInfoExtractor->isReadable($class, $attribute)) {
+            return true;
+        }
+
+        if ($this->hasAttributeAccessorMethod($class, $attribute)) {
+            return true;
+        }
+
+        if (\is_object($classOrObject) && $this->propertyAccessor->isReadable($classOrObject, $attribute)) {
+            return true;
+        }
+
+        return false;
     }
 }
