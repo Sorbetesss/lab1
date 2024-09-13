@@ -960,13 +960,9 @@ class ObjectNormalizerTest extends TestCase
             public static string $foo;
         };
 
-        try {
-            $normalizer = new ObjectNormalizer(new ClassMetadataFactory(new AttributeLoader()));
-            $normalizer->normalize($class);
-            $this->expectNotToPerformAssertions();
-        } catch (\Exception $e) {
-            $this->fail($e->getMessage());
-        }
+        $normalizer = new ObjectNormalizer(new ClassMetadataFactory(new AttributeLoader()));
+        $normalizer->normalize($class);
+        $this->expectNotToPerformAssertions();
     }
 }
 
