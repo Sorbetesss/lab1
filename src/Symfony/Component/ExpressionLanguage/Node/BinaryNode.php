@@ -54,7 +54,7 @@ class BinaryNode extends Node
                 $this->evaluateMatches($this->nodes['right']->evaluate([], []), '');
             } elseif ($this->nodes['right'] instanceof self) {
                 if ('~' !== $this->nodes['right']->attributes['operator']) {
-                    throw new SyntaxError('A boolean is passed to "matches" instead of a regexp.');
+                    throw new SyntaxError('A non-string is passed to "matches" instead of a regexp.');
                 }
             }
 

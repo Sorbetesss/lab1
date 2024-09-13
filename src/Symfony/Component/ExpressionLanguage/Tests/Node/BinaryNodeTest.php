@@ -223,19 +223,19 @@ class BinaryNodeTest extends AbstractNodeTestCase
 
     public function testCompileMatchesWithBooleanBinaryNode()
     {
-        $binary_node = new BinaryNode('||', new ConstantNode(true), new ConstantNode(false));
-        $node = new BinaryNode('matches', new ConstantNode('abc'), $binary_node);
+        $binaryNode = new BinaryNode('||', new ConstantNode(true), new ConstantNode(false));
+        $node = new BinaryNode('matches', new ConstantNode('abc'), $binaryNode);
 
         $this->expectException(SyntaxError::class);
-        $this->expectExceptionMessage('A boolean is passed to "matches" instead of a regexp');
+        $this->expectExceptionMessage('A non-string is passed to "matches" instead of a regexp');
         $compiler = new Compiler([]);
         $node->compile($compiler);
     }
 
     public function testCompileMatchesWithStringBinaryNode()
     {
-        $binary_node = new BinaryNode('~', new ConstantNode('a'), new ConstantNode('b'));
-        $node = new BinaryNode('matches', new ConstantNode('abc'), $binary_node);
+        $binaryNode = new BinaryNode('~', new ConstantNode('a'), new ConstantNode('b'));
+        $node = new BinaryNode('matches', new ConstantNode('abc'), $binaryNode);
 
         $compiler = new Compiler([]);
         $node->compile($compiler);
