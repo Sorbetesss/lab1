@@ -32,13 +32,14 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class SendgridApiTransport extends AbstractApiTransport
 {
-    private const HOST = 'api.sendgrid.com';
+    private const HOST = 'api.%region_dot%sendgrid.com';
 
     public function __construct(
         #[\SensitiveParameter] private string $key,
         ?HttpClientInterface $client = null,
         ?EventDispatcherInterface $dispatcher = null,
         ?LoggerInterface $logger = null,
+        private ?string $region = null
     ) {
         parent::__construct($client, $dispatcher, $logger);
     }
@@ -190,6 +191,8 @@ class SendgridApiTransport extends AbstractApiTransport
 
     private function getEndpoint(): ?string
     {
-        return ($this->host ?: self::HOST).($this->port ? ':'.$this->port : '');
+        $host = $this->host ?: str_replace('%region_dot%', 'eu' !== ($this->region ?: 'eu') ? $this->region.'.' : '', self::HOST);
+
+        return $host.($this->port ? ':'.$this->port : '');
     }
 }

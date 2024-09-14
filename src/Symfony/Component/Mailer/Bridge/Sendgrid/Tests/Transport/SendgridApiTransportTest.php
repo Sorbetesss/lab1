@@ -16,7 +16,7 @@ use Symfony\Component\Mailer\Bridge\Sendgrid\Transport\SendgridApiTransport;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Header\MetadataHeader;
 use Symfony\Component\Mailer\Header\TagHeader;
-use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Address; 
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -38,6 +38,10 @@ class SendgridApiTransportTest extends TestCase
             [
                 new SendgridApiTransport('KEY'),
                 'sendgrid+api://api.sendgrid.com',
+            ],
+            [
+                new SendgridApiTransport('KEY', region: 'eu'),
+                'sendgrid+api://api.eu.sendgrid.com',
             ],
             [
                 (new SendgridApiTransport('KEY'))->setHost('example.com'),
