@@ -15,7 +15,7 @@ MAILER_DSN=sendgrid+api://KEY@default?region=REGION
 
 where:
  - `KEY` is your Sendgrid API Key
- - `REGION` is Mailgun selected region (default to global)
+ - `REGION` is Sendgrid selected region (default to global)
 
 Webhook
 -------

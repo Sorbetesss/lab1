@@ -17,7 +17,7 @@ use Symfony\Component\Mailer\Bridge\Sendgrid\Transport\SendgridApiTransport;
 use Symfony\Component\Mailer\Bridge\Sendgrid\Transport\SendgridSmtpTransport;
 use Symfony\Component\Mailer\Bridge\Sendgrid\Transport\SendgridTransportFactory;
 use Symfony\Component\Mailer\Test\TransportFactoryTestCase;
-use Symfony\Component\Mailer\Transport\Dsn; 
+use Symfony\Component\Mailer\Transport\Dsn;
 use Symfony\Component\Mailer\Transport\TransportFactoryInterface;
 
 class SendgridTransportFactoryTest extends TransportFactoryTestCase
