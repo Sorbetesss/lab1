@@ -191,7 +191,7 @@ class SendgridApiTransport extends AbstractApiTransport
 
     private function getEndpoint(): ?string
     {
-        $host = $this->host;
+        $host = $this->host ?: self::HOST;
         if (null !== $this->region) {
             $host = str_replace('%region_dot%', $this->region.'.', self::HOST);
         }
