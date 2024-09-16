@@ -6,6 +6,7 @@ CHANGELOG
 
  * Remove `@internal` flag and add `@final` to `ServicesResetter`
  * Add support for `SYMFONY_DISABLE_RESOURCE_TRACKING` env var
+ * Allow using Expression for `validationGroups` in `#[MapRequestPayload]` and `#[MapQueryString]`
 
 7.1
 ---
