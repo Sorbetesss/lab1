@@ -160,8 +160,8 @@ class ProfilerControllerTest extends WebTestCase
 
         $response = $controller->toolbarStylesheetAction();
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertEquals('text/css', $response->headers->get('Content-Type'));
-        $this->assertEquals('max-age=3600, private', $response->headers->get('Cache-Control'));
+        $this->assertSame('text/css', $response->headers->get('Content-Type'));
+        $this->assertSame('max-age=3600, private', $response->headers->get('Cache-Control'));
     }
 
     public static function getEmptyTokenCases()
