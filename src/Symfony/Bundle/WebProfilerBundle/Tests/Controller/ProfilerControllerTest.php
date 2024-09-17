@@ -159,7 +159,7 @@ class ProfilerControllerTest extends WebTestCase
         $controller = new ProfilerController($urlGenerator, $profiler, $twig, []);
 
         $response = $controller->toolbarStylesheetAction();
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertEquals('text/css', $response->headers->get('Content-Type'));
         $this->assertEquals('max-age=3600, private', $response->headers->get('Cache-Control'));
     }
