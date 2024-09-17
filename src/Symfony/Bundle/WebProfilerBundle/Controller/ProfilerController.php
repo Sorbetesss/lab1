@@ -171,7 +171,6 @@ class ProfilerController
     {
         $this->denyAccessIfProfilerDisabled();
 
-        $this->profiler->disable();
         $this->cspHandler?->disableCsp();
 
         return new Response(
