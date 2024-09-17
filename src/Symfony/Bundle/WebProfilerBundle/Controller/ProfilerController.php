@@ -163,6 +163,28 @@ class ProfilerController
     }
 
     /**
+     * Renders the Web Debug Toolbar stylesheet.
+     *
+     * @throws NotFoundHttpException
+     */
+    public function toolbarStylesheetAction(): Response
+    {
+        $this->denyAccessIfProfilerDisabled();
+
+        $this->profiler->disable();
+        $this->cspHandler?->disableCsp();
+
+        return new Response(
+            $this->twig->render('@WebProfiler/Profiler/toolbar.css.twig'),
+            200,
+            [
+                'Content-Type' => 'text/css',
+                'Cache-Control' => 'max-age=3600, private',
+            ],
+        );
+    }
+
+    /**
      * Renders the profiler search bar.
      *
      * @throws NotFoundHttpException
@@ -383,6 +405,9 @@ class ProfilerController
         return $this->templateManager ??= new TemplateManager($this->profiler, $this->twig, $this->templates);
     }
 
+    /**
+     * @throws NotFoundHttpException
+     */
     private function denyAccessIfProfilerDisabled(): void
     {
         if (null === $this->profiler) {
