@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
  */
 class PhpBridgeSessionStorageTest extends TestCase
 {
-    private $savePath;
+    private string $savePath;
 
     private $initialSessionSaveHandler;
     private $initialSessionSavePath;
@@ -51,7 +51,6 @@ class PhpBridgeSessionStorageTest extends TestCase
             @rmdir($this->savePath);
         }
 
-        $this->savePath = null;
         ini_set('session.save_handler', $this->initialSessionSaveHandler);
         ini_set('session.save_path', $this->initialSessionSavePath);
     }

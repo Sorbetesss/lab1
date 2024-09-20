@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class CardSchemeValidatorTest extends ConstraintValidatorTestCase
 {
-    protected function createValidator()
+    protected function createValidator(): CardSchemeValidator
     {
         return new CardSchemeValidator();
     }
@@ -47,8 +47,6 @@ class CardSchemeValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @requires PHP 8
-     *
      * @dataProvider getValidNumbers
      */
     public function testValidNumbersWithNewLine($scheme, $number)
@@ -58,21 +56,6 @@ class CardSchemeValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation('myMessage')
             ->setParameter('{{ value }}', '"'.$number."\n\"")
             ->setCode(CardScheme::INVALID_FORMAT_ERROR)
-            ->assertRaised();
-    }
-
-    /**
-     * @requires PHP < 8
-     *
-     * @dataProvider getValidNumbers
-     */
-    public function testValidNumbersWithNewLinePriorToPhp8($scheme, $number)
-    {
-        $this->validator->validate($number."\n", new CardScheme(['schemes' => $scheme, 'message' => 'myMessage']));
-
-        $this->buildViolation('myMessage')
-            ->setParameter('{{ value }}', '"'.$number."\n\"")
-            ->setCode(CardScheme::NOT_NUMERIC_ERROR)
             ->assertRaised();
     }
 
@@ -104,9 +87,6 @@ class CardSchemeValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testInvalidNumberNamedArguments()
     {
         $this->validator->validate(

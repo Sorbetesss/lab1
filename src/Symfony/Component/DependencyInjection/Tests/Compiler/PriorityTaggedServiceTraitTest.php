@@ -191,17 +191,14 @@ class PriorityTaggedServiceTraitTest extends TestCase
 
     public static function provideInvalidDefaultMethods(): iterable
     {
-        yield ['getMethodShouldBeStatic', null, sprintf('Method "%s::getMethodShouldBeStatic()" should be static.', FooTaggedForInvalidDefaultMethodClass::class)];
-        yield ['getMethodShouldBeStatic', 'foo', sprintf('Either method "%s::getMethodShouldBeStatic()" should be static or tag "my_custom_tag" on service "service1" is missing attribute "foo".', FooTaggedForInvalidDefaultMethodClass::class)];
-        yield ['getMethodShouldBePublicInsteadProtected', null, sprintf('Method "%s::getMethodShouldBePublicInsteadProtected()" should be public.', FooTaggedForInvalidDefaultMethodClass::class)];
-        yield ['getMethodShouldBePublicInsteadProtected', 'foo', sprintf('Either method "%s::getMethodShouldBePublicInsteadProtected()" should be public or tag "my_custom_tag" on service "service1" is missing attribute "foo".', FooTaggedForInvalidDefaultMethodClass::class)];
-        yield ['getMethodShouldBePublicInsteadPrivate', null, sprintf('Method "%s::getMethodShouldBePublicInsteadPrivate()" should be public.', FooTaggedForInvalidDefaultMethodClass::class)];
-        yield ['getMethodShouldBePublicInsteadPrivate', 'foo', sprintf('Either method "%s::getMethodShouldBePublicInsteadPrivate()" should be public or tag "my_custom_tag" on service "service1" is missing attribute "foo".', FooTaggedForInvalidDefaultMethodClass::class)];
+        yield ['getMethodShouldBeStatic', null, \sprintf('Method "%s::getMethodShouldBeStatic()" should be static.', FooTaggedForInvalidDefaultMethodClass::class)];
+        yield ['getMethodShouldBeStatic', 'foo', \sprintf('Either method "%s::getMethodShouldBeStatic()" should be static or tag "my_custom_tag" on service "service1" is missing attribute "foo".', FooTaggedForInvalidDefaultMethodClass::class)];
+        yield ['getMethodShouldBePublicInsteadProtected', null, \sprintf('Method "%s::getMethodShouldBePublicInsteadProtected()" should be public.', FooTaggedForInvalidDefaultMethodClass::class)];
+        yield ['getMethodShouldBePublicInsteadProtected', 'foo', \sprintf('Either method "%s::getMethodShouldBePublicInsteadProtected()" should be public or tag "my_custom_tag" on service "service1" is missing attribute "foo".', FooTaggedForInvalidDefaultMethodClass::class)];
+        yield ['getMethodShouldBePublicInsteadPrivate', null, \sprintf('Method "%s::getMethodShouldBePublicInsteadPrivate()" should be public.', FooTaggedForInvalidDefaultMethodClass::class)];
+        yield ['getMethodShouldBePublicInsteadPrivate', 'foo', \sprintf('Either method "%s::getMethodShouldBePublicInsteadPrivate()" should be public or tag "my_custom_tag" on service "service1" is missing attribute "foo".', FooTaggedForInvalidDefaultMethodClass::class)];
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testTaggedItemAttributes()
     {
         $container = new ContainerBuilder();
@@ -215,12 +212,18 @@ class PriorityTaggedServiceTraitTest extends TestCase
         $container->register('service3', HelloNamedService2::class)
             ->setAutoconfigured(true)
             ->addTag('my_custom_tag');
+        $container->register('service4', HelloNamedService2::class)
+            ->setAutoconfigured(true)
+            ->addTag('my_custom_tag');
+        $container->register('service5', HelloNamedService2::class)
+            ->setAutoconfigured(true)
+            ->addTag('my_custom_tag');
 
         (new ResolveInstanceofConditionalsPass())->process($container);
 
         $priorityTaggedServiceTraitImplementation = new PriorityTaggedServiceTraitImplementation();
 
-        $tag = new TaggedIteratorArgument('my_custom_tag', 'foo', 'getFooBar');
+        $tag = new TaggedIteratorArgument('my_custom_tag', 'foo', 'getFooBar', exclude: ['service4', 'service5']);
         $expected = [
             'service3' => new TypedReference('service3', HelloNamedService2::class),
             'hello' => new TypedReference('service2', HelloNamedService::class),

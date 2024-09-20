@@ -102,7 +102,7 @@ class InlineFragmentRendererTest extends TestCase
 
     public function testRenderExceptionIgnoreErrorsWithAlt()
     {
-        $strategy = new InlineFragmentRenderer($this->getKernel($this->returnCallback(function () {
+        $strategy = new InlineFragmentRenderer($this->getKernel(function () {
             static $firstCall = true;
 
             if ($firstCall) {
@@ -112,7 +112,7 @@ class InlineFragmentRendererTest extends TestCase
             }
 
             return new Response('bar');
-        })));
+        }));
 
         $this->assertEquals('bar', $strategy->render('/', Request::create('/'), ['ignore_errors' => true, 'alt' => '/foo'])->getContent());
     }
@@ -127,6 +127,8 @@ class InlineFragmentRendererTest extends TestCase
 
         if ($returnValue instanceof \Exception) {
             $mocker->willThrowException($returnValue);
+        } elseif ($returnValue instanceof \Closure) {
+            $mocker->willReturnCallback($returnValue);
         } else {
             $mocker->willReturn(...(\is_array($returnValue) ? $returnValue : [$returnValue]));
         }
@@ -270,6 +272,36 @@ class InlineFragmentRendererTest extends TestCase
         Request::setTrustedProxies([], -1);
     }
 
+    public function testStatelessAttributeIsForwardedByDefault()
+    {
+        $request = Request::create('/');
+        $request->attributes->set('_stateless', true);
+
+        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel
+            ->expects($this->once())
+            ->method('handle')
+            ->with($this->callback(static fn (Request $subRequest) => $subRequest->attributes->get('_stateless')))
+        ;
+        $strategy = new InlineFragmentRenderer($kernel);
+        $strategy->render('/', $request);
+    }
+
+    public function testStatelessAttributeCanBeDisabled()
+    {
+        $request = Request::create('/');
+        $request->attributes->set('_stateless', true);
+
+        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel
+            ->expects($this->once())
+            ->method('handle')
+            ->with($this->callback(static fn (Request $subRequest) => !$subRequest->attributes->get('_stateless')))
+        ;
+        $strategy = new InlineFragmentRenderer($kernel);
+        $strategy->render(new ControllerReference('main_controller', ['_stateless' => false]), $request);
+    }
+
     /**
      * Creates a Kernel expecting a request equals to $request.
      */
@@ -293,7 +325,7 @@ class InlineFragmentRendererTest extends TestCase
 
 class Bar
 {
-    public $bar = 'bar';
+    public string $bar = 'bar';
 
     public function getBar()
     {

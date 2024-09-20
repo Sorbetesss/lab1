@@ -11,7 +11,6 @@
 
 namespace Symfony\Bridge\Twig\Node;
 
-use Twig\Attribute\FirstClassTwigCallableReady;
 use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 use Twig\Node\Node;
@@ -22,22 +21,17 @@ use Twig\Node\Node;
 #[YieldReady]
 final class DumpNode extends Node
 {
-    private $varPrefix;
-
-    public function __construct(string $varPrefix, ?Node $values, int $lineno, ?string $tag = null)
-    {
+    public function __construct(
+        private string $varPrefix,
+        ?Node $values,
+        int $lineno,
+    ) {
         $nodes = [];
         if (null !== $values) {
             $nodes['values'] = $values;
         }
 
-        if (class_exists(FirstClassTwigCallableReady::class)) {
-            parent::__construct($nodes, [], $lineno);
-        } else {
-            parent::__construct($nodes, [], $lineno, $tag);
-        }
-
-        $this->varPrefix = $varPrefix;
+        parent::__construct($nodes, [], $lineno);
     }
 
     public function compile(Compiler $compiler): void
@@ -49,18 +43,18 @@ final class DumpNode extends Node
         if (!$this->hasNode('values')) {
             // remove embedded templates (macros) from the context
             $compiler
-                ->write(sprintf('$%svars = [];'."\n", $this->varPrefix))
-                ->write(sprintf('foreach ($context as $%1$skey => $%1$sval) {'."\n", $this->varPrefix))
+                ->write(\sprintf('$%svars = [];'."\n", $this->varPrefix))
+                ->write(\sprintf('foreach ($context as $%1$skey => $%1$sval) {'."\n", $this->varPrefix))
                 ->indent()
-                ->write(sprintf('if (!$%sval instanceof \Twig\Template) {'."\n", $this->varPrefix))
+                ->write(\sprintf('if (!$%sval instanceof \Twig\Template) {'."\n", $this->varPrefix))
                 ->indent()
-                ->write(sprintf('$%1$svars[$%1$skey] = $%1$sval;'."\n", $this->varPrefix))
+                ->write(\sprintf('$%1$svars[$%1$skey] = $%1$sval;'."\n", $this->varPrefix))
                 ->outdent()
                 ->write("}\n")
                 ->outdent()
                 ->write("}\n")
                 ->addDebugInfo($this)
-                ->write(sprintf('\Symfony\Component\VarDumper\VarDumper::dump($%svars);'."\n", $this->varPrefix));
+                ->write(\sprintf('\Symfony\Component\VarDumper\VarDumper::dump($%svars);'."\n", $this->varPrefix));
         } elseif (($values = $this->getNode('values')) && 1 === $values->count()) {
             $compiler
                 ->addDebugInfo($this)

@@ -2,6 +2,8 @@ imports:
     - { resource: ../config/default.yml }
 
 framework:
+    http_method_override: false
+    translator: true
     serializer:
         enabled: true
         circular_reference_handler: Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Serializer\CircularReferenceHandler

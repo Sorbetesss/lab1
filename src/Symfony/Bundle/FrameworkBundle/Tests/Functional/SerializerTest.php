@@ -11,6 +11,7 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Tests\Functional;
 
+use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\TranslatableBackedEnum;
 use Symfony\Bundle\FrameworkBundle\Tests\Functional\app\AppKernel;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -43,11 +44,14 @@ class SerializerTest extends AbstractWebTestCase
         $kernel = static::bootKernel(['test_case' => 'Serializer', 'root_config' => 'default_context.yaml']);
 
         foreach ($kernel->normalizersAndEncoders as $normalizerOrEncoderId) {
+            if (!static::getContainer()->has($normalizerOrEncoderId)) {
+                continue;
+            }
+
             $normalizerOrEncoder = static::getContainer()->get($normalizerOrEncoderId);
 
             $reflectionObject = new \ReflectionObject($normalizerOrEncoder);
             $property = $reflectionObject->getProperty('defaultContext');
-            $property->setAccessible(true);
 
             $defaultContext = $property->getValue($normalizerOrEncoder);
 
@@ -68,7 +72,7 @@ class SerializerKernel extends AppKernel implements CompilerPassInterface
         'serializer.normalizer.property.alias', // Special case as this normalizer isn't tagged
     ];
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $services = array_merge(
             $container->findTaggedServiceIds('serializer.normalizer'),
@@ -86,6 +90,15 @@ class SerializerKernel extends AppKernel implements CompilerPassInterface
                 }
             }
         }
+    }
+
+    public function testSerializeTranslatableBackedEnum()
+    {
+        static::bootKernel(['test_case' => 'Serializer']);
+
+        $serializer = static::getContainer()->get('serializer.alias');
+
+        $this->assertEquals('GET', $serializer->serialize(TranslatableBackedEnum::Get, 'yaml'));
     }
 }
 
