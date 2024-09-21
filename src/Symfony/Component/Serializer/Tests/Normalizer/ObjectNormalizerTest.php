@@ -942,6 +942,7 @@ class ObjectNormalizerTest extends TestCase
             'tell' => true,
             'class' => true,
             'responsibility' => true,
+            123 => 321
         ], $normalized);
     }
 }
@@ -1259,5 +1260,15 @@ class ObjectWithAccessorishMethods
     public function hasResponsibility()
     {
         return true;
+    }
+
+    public function get_foo()
+    {
+        return 'bar';
+    }
+
+    public function get123()
+    {
+        return 321;
     }
 }
