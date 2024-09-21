@@ -1271,4 +1271,19 @@ class ObjectWithAccessorishMethods
     {
         return 321;
     }
+
+    public function gettings()
+    {
+        $this->accessorishCalled = true;
+    }
+
+    public function settings()
+    {
+        $this->accessorishCalled = true;
+    }
+
+    public function isolate()
+    {
+        $this->accessorishCalled = true;
+    }
 }
