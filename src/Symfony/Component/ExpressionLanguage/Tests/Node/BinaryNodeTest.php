@@ -227,7 +227,7 @@ class BinaryNodeTest extends AbstractNodeTestCase
         $node = new BinaryNode('matches', new ConstantNode('abc'), $binaryNode);
 
         $this->expectException(SyntaxError::class);
-        $this->expectExceptionMessage('A non-string is passed to "matches" instead of a regexp');
+        $this->expectExceptionMessage('The regex passed to "matches" must be a string');
         $compiler = new Compiler([]);
         $node->compile($compiler);
     }
