@@ -429,7 +429,7 @@ class ResponseCacheStrategyTest extends TestCase
         ];
 
         yield 'merge max-age and s-maxage' => [
-            ['public' => true, 's-maxage' => '60'],
+            ['public' => true, 'max-age' => null, 's-maxage' => '60'],
             ['public' => true, 's-maxage' => 3600],
             [
                 ['public' => true, 'max-age' => 60],
