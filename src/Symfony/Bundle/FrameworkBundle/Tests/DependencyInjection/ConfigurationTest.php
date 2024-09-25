@@ -19,6 +19,7 @@ use Symfony\Component\Cache\Adapter\DoctrineAdapter;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\FeatureFlag\FeatureChecker;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Lock\Store\SemaphoreStore;
@@ -956,6 +957,9 @@ class ConfigurationTest extends TestCase
             ],
             'remote-event' => [
                 'enabled' => !class_exists(FullStack::class) && class_exists(RemoteEvent::class),
+            ],
+            'feature_flag' => [
+                'enabled' => !class_exists(FullStack::class) && class_exists(FeatureChecker::class),
             ],
         ];
     }
