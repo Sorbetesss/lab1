@@ -52,6 +52,11 @@ Messenger
 
  * Add `getRetryDelay()` method to `RecoverableExceptionInterface`
 
+Notifier
+--------
+
+ * Deprecate the `Sms77Transport` class, use `SevenIoTransport`instead
+
 Security
 --------
 
