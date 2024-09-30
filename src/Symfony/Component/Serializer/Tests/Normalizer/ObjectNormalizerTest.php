@@ -961,8 +961,7 @@ class ObjectNormalizerTest extends TestCase
         };
 
         $normalizer = new ObjectNormalizer(new ClassMetadataFactory(new AttributeLoader()));
-        $normalizer->normalize($class);
-        $this->expectNotToPerformAssertions();
+        $this->assertSame([], $normalizer->normalize($class));
     }
 }
 
