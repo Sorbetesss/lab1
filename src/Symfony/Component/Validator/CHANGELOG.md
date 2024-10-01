@@ -4,6 +4,7 @@ CHANGELOG
 7.2
 ---
 
+ * Translation check and Added few more translations
  * `IbanValidator` accepts IBANs containing non-breaking and narrow non-breaking spaces
  * Make `PasswordStrengthValidator::estimateStrength()` public
  * Add the `Yaml` constraint for validating YAML content
