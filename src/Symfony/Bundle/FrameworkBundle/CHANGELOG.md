@@ -13,6 +13,8 @@ CHANGELOG
  * Deprecate making `cache.app` adapter taggable, use the `cache.app.taggable` adapter instead
  * Enable `json_decode_detailed_errors` in the default serializer context in debug mode by default when `seld/jsonlint` is installed
  * Register `Symfony\Component\Serializer\NameConverter\SnakeCaseToCamelCaseNameConverter` as a service named `serializer.name_converter.snake_case_to_camel_case` if available
+ * Add `framework.csrf_protection.double_submit_token_ids`, `.cookie_name`, and `.check_header` options to use double-submit CSRF protection
+ * Add `framework.form.csrf_protection.field_attr` option
  * Deprecate `session.sid_length` and `session.sid_bits_per_character` config options
  * Add the ability to use an existing service as a lock/semaphore resource
  * Add support for configuring multiple serializer instances via the configuration

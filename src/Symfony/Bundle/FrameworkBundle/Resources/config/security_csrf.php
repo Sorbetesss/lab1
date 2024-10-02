@@ -15,6 +15,7 @@ use Symfony\Bridge\Twig\Extension\CsrfExtension;
 use Symfony\Bridge\Twig\Extension\CsrfRuntime;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\DoubleSubmitCsrfTokenManager;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
 use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
@@ -46,5 +47,18 @@ return static function (ContainerConfigurator $container) {
 
         ->set('twig.extension.security_csrf', CsrfExtension::class)
             ->tag('twig.extension')
+
+        ->set('security.csrf.double_submit_token_manager', DoubleSubmitCsrfTokenManager::class)
+            ->decorate('security.csrf.token_manager')
+            ->args([
+                service('request_stack'),
+                service('logger')->nullOnInvalid(),
+                service('.inner'),
+                abstract_arg('framework.csrf_protection.double_submit_token_ids'),
+                abstract_arg('framework.csrf_protection.check_header'),
+                abstract_arg('framework.csrf_protection.cookie_name'),
+            ])
+            ->tag('monolog.logger', ['channel' => 'request'])
+            ->tag('kernel.event_listener', ['event' => 'kernel.response', 'method' => 'onKernelResponse'])
     ;
 };
