@@ -13,6 +13,8 @@ CHANGELOG
 ---
 
  * Add `ArgvInput::getRawTokens()`
+ * Add `InputOption::HIDDEN` flag to hide options
+ * Add `InputOption::DEPRECATED` flag to mark options as deprecated
 
 7.0
 ---
